@@ -1,0 +1,442 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="theme-color" content="#E1306C">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="default">
+<meta name="apple-mobile-web-app-title" content="Mis Saves">
+<link rel="manifest" href="/manifest.json">
+<link rel="apple-touch-icon" href="/icon-192.png">
+<title>Mis Saves</title>
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@tabler/icons-webfont@3.19.0/dist/tabler-icons.min.css">
+<style>
+*{box-sizing:border-box;margin:0;padding:0}
+:root{
+  --pink:#E1306C;
+  --pink-dark:#c01c57;
+  --bg:#f8f8f8;
+  --surface:#fff;
+  --border:#e5e5e5;
+  --text:#1a1a1a;
+  --text2:#666;
+  --text3:#999;
+  --radius:12px;
+  --radius-sm:8px;
+}
+@media(prefers-color-scheme:dark){
+  :root{
+    --bg:#111;
+    --surface:#1e1e1e;
+    --border:#333;
+    --text:#f0f0f0;
+    --text2:#aaa;
+    --text3:#666;
+  }
+}
+body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;background:var(--bg);color:var(--text);min-height:100vh;padding-bottom:80px}
+.header{background:var(--surface);border-bottom:1px solid var(--border);padding:14px 16px;display:flex;align-items:center;justify-content:space-between;position:sticky;top:0;z-index:10}
+.header h1{font-size:18px;font-weight:600;display:flex;align-items:center;gap:8px}
+.header h1 i{color:var(--pink);font-size:20px}
+.btn{background:var(--surface);border:1px solid var(--border);border-radius:var(--radius-sm);padding:8px 14px;font-size:13px;cursor:pointer;color:var(--text);display:inline-flex;align-items:center;gap:6px;font-family:inherit;transition:opacity 0.15s}
+.btn:active{opacity:0.7}
+.btn-primary{background:var(--pink);color:#fff;border-color:var(--pink)}
+.app{max-width:680px;margin:0 auto;padding:16px}
+.stats{display:grid;grid-template-columns:repeat(4,1fr);gap:8px;margin-bottom:16px}
+.stat{background:var(--surface);border:1px solid var(--border);border-radius:var(--radius-sm);padding:10px 8px;text-align:center}
+.stat-num{font-size:20px;font-weight:600;line-height:1}
+.stat-lbl{font-size:10px;color:var(--text2);margin-top:3px}
+.search-wrap{position:relative;margin-bottom:10px}
+.search-wrap input{width:100%;padding:10px 12px 10px 36px;border:1px solid var(--border);border-radius:20px;background:var(--surface);color:var(--text);font-size:14px;outline:none;font-family:inherit}
+.search-wrap i{position:absolute;left:11px;top:50%;transform:translateY(-50%);color:var(--text3);font-size:17px}
+.chips{display:flex;gap:6px;overflow-x:auto;padding-bottom:8px;margin-bottom:14px;scrollbar-width:none}
+.chips::-webkit-scrollbar{display:none}
+.chip{background:var(--surface);border:1px solid var(--border);border-radius:20px;padding:5px 14px;font-size:12px;cursor:pointer;color:var(--text2);white-space:nowrap;flex-shrink:0;font-family:inherit}
+.chip.active{background:var(--pink);color:#fff;border-color:var(--pink)}
+.grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(160px,1fr));gap:12px}
+.card{background:var(--surface);border:1px solid var(--border);border-radius:var(--radius);overflow:hidden;cursor:pointer;-webkit-tap-highlight-color:transparent}
+.card-thumb{width:100%;height:140px;background:var(--bg);display:flex;align-items:center;justify-content:center;position:relative;overflow:hidden}
+.card-thumb img{width:100%;height:100%;object-fit:cover}
+.card-thumb .no-img{font-size:36px;color:var(--text3)}
+.card-thumb .cat-badge{position:absolute;top:6px;left:6px;background:rgba(0,0,0,0.6);color:#fff;font-size:10px;padding:2px 8px;border-radius:10px}
+.card-body{padding:8px 10px 10px}
+.card-title{font-size:12px;font-weight:500;line-height:1.4;margin-bottom:4px;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden}
+.card-sub{font-size:10px;color:var(--text2);margin-bottom:6px}
+.card-footer{display:flex;align-items:center;justify-content:space-between}
+.stars-sm{font-size:11px;letter-spacing:1px}
+.star-on{color:#f59e0b}
+.star-off{color:var(--border)}
+.card-del{background:none;border:none;cursor:pointer;padding:2px;color:var(--text3);font-size:14px;font-family:inherit}
+.fab{position:fixed;bottom:24px;right:20px;width:56px;height:56px;border-radius:50%;background:var(--pink);color:#fff;border:none;font-size:26px;cursor:pointer;display:flex;align-items:center;justify-content:center;box-shadow:0 4px 16px rgba(225,48,108,0.4);z-index:20;-webkit-tap-highlight-color:transparent}
+.empty{text-align:center;padding:3rem 1rem;color:var(--text2);grid-column:1/-1}
+.empty i{font-size:48px;opacity:0.25;display:block;margin-bottom:12px}
+
+/* Modal */
+.overlay{position:fixed;inset:0;background:rgba(0,0,0,0.5);z-index:50;display:flex;align-items:flex-end;justify-content:center}
+.sheet{background:var(--surface);border-radius:20px 20px 0 0;width:100%;max-width:680px;max-height:92vh;overflow-y:auto;padding:0 0 env(safe-area-inset-bottom)}
+.sheet-handle{width:36px;height:4px;background:var(--border);border-radius:2px;margin:12px auto 0}
+.sheet-header{display:flex;align-items:center;justify-content:space-between;padding:14px 16px;border-bottom:1px solid var(--border)}
+.sheet-header h2{font-size:16px;font-weight:600}
+.sheet-body{padding:16px}
+.field{margin-bottom:14px}
+.field label{display:block;font-size:12px;color:var(--text2);margin-bottom:5px;font-weight:500}
+.field input,.field select,.field textarea{width:100%;padding:10px 12px;border:1px solid var(--border);border-radius:var(--radius-sm);background:var(--surface);color:var(--text);font-size:14px;outline:none;font-family:inherit;-webkit-appearance:none}
+.field input:focus,.field select:focus,.field textarea:focus{border-color:var(--pink)}
+.field textarea{resize:none;height:70px}
+.field-row{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.star-pick{display:flex;gap:6px;padding:4px 0}
+.star-pick span{font-size:28px;cursor:pointer;-webkit-tap-highlight-color:transparent}
+.sheet-footer{padding:12px 16px;border-top:1px solid var(--border);display:flex;gap:10px}
+.sheet-footer .btn{flex:1;justify-content:center;padding:12px}
+.link-hint{font-size:11px;color:var(--text3);margin-top:4px;word-break:break-all}
+
+/* Detail sheet */
+.detail-img{width:100%;max-height:220px;object-fit:cover}
+.detail-rows{padding:0 16px}
+.drow{display:flex;gap:10px;padding:10px 0;border-bottom:1px solid var(--border);align-items:baseline}
+.drow:last-child{border-bottom:none}
+.dlbl{font-size:12px;color:var(--text2);min-width:100px}
+.dval{font-size:13px;flex:1;word-break:break-all}
+.dval a{color:var(--pink);text-decoration:none}
+
+/* Share received banner */
+.share-banner{background:#e8f5e9;border:1px solid #a5d6a7;border-radius:var(--radius-sm);padding:10px 14px;margin-bottom:14px;font-size:13px;color:#2e7d32;display:flex;align-items:center;gap:8px}
+</style>
+</head>
+<body>
+
+<div class="header">
+  <h1><i class="ti ti-bookmark-filled"></i> Mis Saves</h1>
+  <button class="btn" onclick="exportCSV()"><i class="ti ti-download"></i> Exportar</button>
+</div>
+
+<div class="app">
+  <div class="stats" id="stats"></div>
+  <div class="search-wrap">
+    <i class="ti ti-search"></i>
+    <input type="text" id="search" placeholder="Buscar posts..." oninput="render()">
+  </div>
+  <div class="chips" id="chips"></div>
+  <div class="grid" id="grid"></div>
+</div>
+
+<button class="fab" onclick="openAdd()" aria-label="Agregar post">
+  <i class="ti ti-plus"></i>
+</button>
+
+<!-- Add/Edit Sheet -->
+<div class="overlay" id="add-modal" style="display:none" onclick="handleOverlayClick(event,'add-modal')">
+  <div class="sheet">
+    <div class="sheet-handle"></div>
+    <div class="sheet-header">
+      <h2 id="modal-title">Agregar post</h2>
+      <button class="btn" onclick="closeAdd()"><i class="ti ti-x"></i></button>
+    </div>
+    <div class="sheet-body">
+      <div id="share-banner" style="display:none" class="share-banner">
+        <i class="ti ti-share"></i> Link recibido desde Instagram
+      </div>
+      <div class="field">
+        <label>Link de Instagram *</label>
+        <input type="url" id="f-link" placeholder="https://www.instagram.com/reel/..." oninput="onLinkChange()">
+        <div class="link-hint" id="link-hint"></div>
+      </div>
+      <div class="field">
+        <label>Título *</label>
+        <input type="text" id="f-title" placeholder="Ej: Focaccia de romero y aceitunas">
+      </div>
+      <div class="field-row">
+        <div class="field">
+          <label>Categoría *</label>
+          <select id="f-cat" onchange="updateSubcats()">
+            <option value="">Elegir...</option>
+          </select>
+        </div>
+        <div class="field">
+          <label>Subcategoría</label>
+          <select id="f-sub"><option value="">Elegir...</option></select>
+        </div>
+      </div>
+      <div class="field">
+        <label>URL de foto (opcional)</label>
+        <input type="url" id="f-img" placeholder="https://...">
+      </div>
+      <div class="field">
+        <label>Notas</label>
+        <textarea id="f-note" placeholder="Comentarios, dónde probarlo, tips..."></textarea>
+      </div>
+      <div class="field">
+        <label>Puntuación</label>
+        <div class="star-pick" id="star-pick">
+          <span onclick="setPick(1)">☆</span>
+          <span onclick="setPick(2)">☆</span>
+          <span onclick="setPick(3)">☆</span>
+          <span onclick="setPick(4)">☆</span>
+          <span onclick="setPick(5)">☆</span>
+        </div>
+      </div>
+    </div>
+    <div class="sheet-footer">
+      <button class="btn" onclick="closeAdd()">Cancelar</button>
+      <button class="btn btn-primary" onclick="savePost()"><i class="ti ti-check"></i> Guardar</button>
+    </div>
+  </div>
+</div>
+
+<!-- Detail Sheet -->
+<div class="overlay" id="detail-modal" style="display:none" onclick="handleOverlayClick(event,'detail-modal')">
+  <div class="sheet">
+    <div class="sheet-handle"></div>
+    <div class="sheet-header">
+      <h2 id="d-title">Detalle</h2>
+      <button class="btn" onclick="closeDetail()"><i class="ti ti-x"></i></button>
+    </div>
+    <div id="d-content"></div>
+    <div class="sheet-footer">
+      <button class="btn" onclick="editFromDetail()"><i class="ti ti-edit"></i> Editar</button>
+      <button class="btn btn-primary" id="d-open-btn"><i class="ti ti-brand-instagram"></i> Abrir</button>
+    </div>
+  </div>
+</div>
+
+<script>
+const CATS = {
+  "Restaurantes":["Parrilla","Pasta","Japonesa","Pizza","Mariscos","Cafetería","Brunch","Otro"],
+  "Comidas":["Desayuno","Almuerzo","Cena","Snack","Bebidas","Vegano","Otro"],
+  "Panadería":["Pan artesanal","Facturas","Medialunas","Sin gluten","Otro"],
+  "Pastelería":["Tortas","Galletitas","Macarons","Tartas","Brownie","Otro"],
+  "Cosas para comprar":["Ropa","Hogar","Tecnología","Belleza","Libros","Otro"],
+  "Viajes":["Hoteles","Lugares","Restaurantes","Tips","Otro"],
+  "Fitness":["Ejercicios","Recetas fit","Motivación","Otro"],
+  "DIY / Manualidades":["Decoración","Tejido","Pintura","Otro"],
+  "Otro":["General"]
+};
+
+let data = [], editId = null, viewId = null, filterCat = 'all', pickRating = 0;
+
+function loadData() {
+  try { data = JSON.parse(localStorage.getItem('ig_saves') || '[]'); } catch(e) { data = []; }
+}
+function saveData() {
+  localStorage.setItem('ig_saves', JSON.stringify(data));
+}
+
+function buildStats() {
+  const total = data.length;
+  const cats = new Set(data.map(d=>d.cat).filter(Boolean)).size;
+  const rated = data.filter(d=>d.rating>0);
+  const avg = rated.length ? (rated.reduce((s,d)=>s+d.rating,0)/rated.length).toFixed(1) : '-';
+  const fivestar = data.filter(d=>d.rating===5).length;
+  document.getElementById('stats').innerHTML = `
+    <div class="stat"><div class="stat-num">${total}</div><div class="stat-lbl">Guardados</div></div>
+    <div class="stat"><div class="stat-num">${cats}</div><div class="stat-lbl">Categorías</div></div>
+    <div class="stat"><div class="stat-num">${avg}</div><div class="stat-lbl">Promedio</div></div>
+    <div class="stat"><div class="stat-num">${fivestar}</div><div class="stat-lbl">5 ★</div></div>
+  `;
+}
+
+function buildChips() {
+  const used = [...new Set(data.map(d=>d.cat).filter(Boolean))].sort();
+  let html = `<button class="chip ${filterCat==='all'?'active':''}" onclick="setFilter('all')">Todos (${data.length})</button>`;
+  used.forEach(c => {
+    const n = data.filter(d=>d.cat===c).length;
+    html += `<button class="chip ${filterCat===c?'active':''}" onclick="setFilter('${c}')">${c} (${n})</button>`;
+  });
+  document.getElementById('chips').innerHTML = html;
+}
+
+function starsHtml(r, size='sm') {
+  return [1,2,3,4,5].map(i=>`<span class="${i<=r?'star-on':'star-off'}">${i<=r?'★':'☆'}</span>`).join('');
+}
+
+function getFiltered() {
+  const q = (document.getElementById('search').value||'').toLowerCase();
+  return data.filter(d => {
+    const matchCat = filterCat==='all' || d.cat===filterCat;
+    const matchQ = !q || [d.title,d.cat,d.sub,d.note].some(v=>(v||'').toLowerCase().includes(q));
+    return matchCat && matchQ;
+  });
+}
+
+function render() {
+  buildStats();
+  buildChips();
+  const items = getFiltered();
+  const grid = document.getElementById('grid');
+  if (!items.length) {
+    grid.innerHTML = `<div class="empty"><i class="ti ti-bookmark"></i><p>${data.length?'Sin resultados para esa búsqueda.':'Tocá + para agregar tu primer post.'}</p></div>`;
+    return;
+  }
+  grid.innerHTML = items.map(item => `
+    <div class="card" onclick="openDetail('${item.id}')">
+      <div class="card-thumb">
+        ${item.img
+          ? `<img src="${item.img}" onerror="this.parentNode.innerHTML='<div class=no-img><i class=ti-photo></i></div>'" loading="lazy">`
+          : `<div class="no-img"><i class="ti ti-photo"></i></div>`}
+        ${item.cat ? `<div class="cat-badge">${item.cat}</div>` : ''}
+      </div>
+      <div class="card-body">
+        <div class="card-title">${escHtml(item.title)}</div>
+        ${item.sub ? `<div class="card-sub">${escHtml(item.sub)}</div>` : ''}
+        <div class="card-footer">
+          <div class="stars-sm">${starsHtml(item.rating||0)}</div>
+          <button class="card-del" onclick="event.stopPropagation();delPost('${item.id}')"><i class="ti ti-trash"></i></button>
+        </div>
+      </div>
+    </div>
+  `).join('');
+}
+
+function setFilter(c) { filterCat = c; render(); }
+
+function escHtml(s) {
+  return (s||'').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');
+}
+
+/* ---- Add/Edit ---- */
+function fillCatSelect(val='') {
+  document.getElementById('f-cat').innerHTML =
+    '<option value="">Elegir...</option>' +
+    Object.keys(CATS).map(c=>`<option value="${c}" ${c===val?'selected':''}>${c}</option>`).join('');
+  updateSubcats(val);
+}
+
+function updateSubcats(cat) {
+  const c = cat || document.getElementById('f-cat').value;
+  const subs = CATS[c] || [];
+  document.getElementById('f-sub').innerHTML =
+    '<option value="">Elegir...</option>' + subs.map(s=>`<option>${s}</option>`).join('');
+}
+
+function setPick(n) {
+  pickRating = n;
+  document.querySelectorAll('#star-pick span').forEach((el,i) => {
+    el.textContent = i < n ? '★' : '☆';
+    el.style.color = i < n ? '#f59e0b' : 'var(--text3)';
+  });
+}
+
+function onLinkChange() {
+  const v = document.getElementById('f-link').value.trim();
+  document.getElementById('link-hint').textContent = v ? v : '';
+}
+
+function openAdd(prefillLink='') {
+  editId = null; pickRating = 0;
+  document.getElementById('modal-title').textContent = 'Agregar post';
+  document.getElementById('f-link').value = prefillLink;
+  document.getElementById('f-title').value = '';
+  document.getElementById('f-img').value = '';
+  document.getElementById('f-note').value = '';
+  document.getElementById('link-hint').textContent = prefillLink;
+  document.getElementById('share-banner').style.display = prefillLink ? 'flex' : 'none';
+  fillCatSelect();
+  setPick(0);
+  document.getElementById('add-modal').style.display = 'flex';
+}
+
+function closeAdd() { document.getElementById('add-modal').style.display = 'none'; }
+
+function openEdit(id) {
+  const item = data.find(d=>d.id===id); if(!item) return;
+  editId = id; pickRating = item.rating||0;
+  document.getElementById('modal-title').textContent = 'Editar post';
+  document.getElementById('f-link').value = item.link||'';
+  document.getElementById('f-title').value = item.title||'';
+  document.getElementById('f-img').value = item.img||'';
+  document.getElementById('f-note').value = item.note||'';
+  document.getElementById('link-hint').textContent = item.link||'';
+  document.getElementById('share-banner').style.display = 'none';
+  fillCatSelect(item.cat||'');
+  document.getElementById('f-sub').value = item.sub||'';
+  setPick(pickRating);
+  document.getElementById('add-modal').style.display = 'flex';
+}
+
+function savePost() {
+  const link = document.getElementById('f-link').value.trim();
+  const title = document.getElementById('f-title').value.trim();
+  if (!link || !title) { alert('El link y el título son obligatorios.'); return; }
+  const post = {
+    id: editId || Date.now().toString(),
+    link, title,
+    cat: document.getElementById('f-cat').value,
+    sub: document.getElementById('f-sub').value,
+    img: document.getElementById('f-img').value.trim(),
+    note: document.getElementById('f-note').value.trim(),
+    rating: pickRating,
+    date: editId ? (data.find(d=>d.id===editId)||{}).date || new Date().toISOString() : new Date().toISOString()
+  };
+  if (editId) { const i = data.findIndex(d=>d.id===editId); if(i>=0) data[i]=post; }
+  else data.unshift(post);
+  saveData(); closeAdd(); render();
+}
+
+function delPost(id) {
+  if (!confirm('¿Eliminar este post?')) return;
+  data = data.filter(d=>d.id!==id);
+  saveData(); render();
+}
+
+/* ---- Detail ---- */
+function openDetail(id) {
+  const item = data.find(d=>d.id===id); if(!item) return;
+  viewId = id;
+  document.getElementById('d-title').textContent = item.title;
+  document.getElementById('d-content').innerHTML = `
+    ${item.img ? `<img class="detail-img" src="${escHtml(item.img)}" onerror="this.style.display='none'">` : ''}
+    <div class="detail-rows">
+      <div class="drow"><span class="dlbl">Categoría</span><span class="dval">${escHtml(item.cat)||'-'}</span></div>
+      <div class="drow"><span class="dlbl">Subcategoría</span><span class="dval">${escHtml(item.sub)||'-'}</span></div>
+      <div class="drow"><span class="dlbl">Puntuación</span><span class="dval" style="font-size:18px;color:#f59e0b">${starsHtml(item.rating||0)}</span></div>
+      <div class="drow"><span class="dlbl">Fecha</span><span class="dval">${item.date ? new Date(item.date).toLocaleDateString('es-AR') : '-'}</span></div>
+      <div class="drow"><span class="dlbl">Notas</span><span class="dval">${escHtml(item.note)||'Sin notas'}</span></div>
+      <div class="drow"><span class="dlbl">Link</span><span class="dval"><a href="${escHtml(item.link)}" target="_blank">${escHtml(item.link)}</a></span></div>
+    </div>
+  `;
+  document.getElementById('d-open-btn').onclick = () => window.open(item.link, '_blank');
+  document.getElementById('detail-modal').style.display = 'flex';
+}
+
+function closeDetail() { document.getElementById('detail-modal').style.display = 'none'; }
+
+function editFromDetail() { closeDetail(); openEdit(viewId); }
+
+function handleOverlayClick(e, id) {
+  if (e.target === document.getElementById(id)) {
+    document.getElementById(id).style.display = 'none';
+  }
+}
+
+/* ---- Export CSV ---- */
+function exportCSV() {
+  if (!data.length) { alert('No hay posts para exportar.'); return; }
+  const headers = ['Título','Categoría','Subcategoría','Puntuación','Notas','Link','Fecha'];
+  const rows = data.map(d => [d.title,d.cat,d.sub,d.rating,d.note,d.link,d.date].map(v => `"${(v||'').toString().replace(/"/g,'""')}"`));
+  const csv = [headers, ...rows].map(r => r.join(',')).join('\n');
+  const a = document.createElement('a');
+  a.href = 'data:text/csv;charset=utf-8,\uFEFF' + encodeURIComponent(csv);
+  a.download = 'mis-saves.csv';
+  a.click();
+}
+
+/* ---- PWA Share Target ---- */
+async function handleShareTarget() {
+  if ('serviceWorker' in navigator) {
+    navigator.serviceWorker.register('/sw.js');
+  }
+  const params = new URLSearchParams(window.location.search);
+  const sharedUrl = params.get('url') || params.get('text') || '';
+  if (sharedUrl && sharedUrl.includes('instagram.com')) {
+    history.replaceState({}, '', '/');
+    openAdd(sharedUrl.trim());
+  }
+}
+
+loadData();
+render();
+handleShareTarget();
+</script>
+</body>
+</html>
