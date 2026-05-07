@@ -3,440 +3,389 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<meta name="theme-color" content="#E1306C">
+<meta name="theme-color" content="#c4638a">
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-status-bar-style" content="default">
 <meta name="apple-mobile-web-app-title" content="Mis Saves">
 <link rel="manifest" href="/manifest.json">
 <link rel="apple-touch-icon" href="/icon-192.png">
-<title>Mis Saves</title>
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@tabler/icons-webfont@3.19.0/dist/tabler-icons.min.css">
+<title>Mis Saves</title>
 <style>
 *{box-sizing:border-box;margin:0;padding:0}
 :root{
-  --pink:#E1306C;
-  --pink-dark:#c01c57;
-  --bg:#f8f8f8;
-  --surface:#fff;
-  --border:#e5e5e5;
-  --text:#1a1a1a;
-  --text2:#666;
-  --text3:#999;
-  --radius:12px;
-  --radius-sm:8px;
+  --rose-l:#fde8f0;--rose-d:#c4638a;--rose:#f7a8c4;
+  --bg:#fdf6f9;--surface:#fff;--border:#f0e0eb;
+  --text:#3d2a38;--text2:#9a7090;--text3:#c9a8c0;
+  --r:16px;--rsm:10px;
 }
-@media(prefers-color-scheme:dark){
-  :root{
-    --bg:#111;
-    --surface:#1e1e1e;
-    --border:#333;
-    --text:#f0f0f0;
-    --text2:#aaa;
-    --text3:#666;
-  }
-}
-body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;background:var(--bg);color:var(--text);min-height:100vh;padding-bottom:80px}
-.header{background:var(--surface);border-bottom:1px solid var(--border);padding:14px 16px;display:flex;align-items:center;justify-content:space-between;position:sticky;top:0;z-index:10}
-.header h1{font-size:18px;font-weight:600;display:flex;align-items:center;gap:8px}
-.header h1 i{color:var(--pink);font-size:20px}
-.btn{background:var(--surface);border:1px solid var(--border);border-radius:var(--radius-sm);padding:8px 14px;font-size:13px;cursor:pointer;color:var(--text);display:inline-flex;align-items:center;gap:6px;font-family:inherit;transition:opacity 0.15s}
-.btn:active{opacity:0.7}
-.btn-primary{background:var(--pink);color:#fff;border-color:var(--pink)}
-.app{max-width:680px;margin:0 auto;padding:16px}
-.stats{display:grid;grid-template-columns:repeat(4,1fr);gap:8px;margin-bottom:16px}
-.stat{background:var(--surface);border:1px solid var(--border);border-radius:var(--radius-sm);padding:10px 8px;text-align:center}
-.stat-num{font-size:20px;font-weight:600;line-height:1}
-.stat-lbl{font-size:10px;color:var(--text2);margin-top:3px}
-.search-wrap{position:relative;margin-bottom:10px}
-.search-wrap input{width:100%;padding:10px 12px 10px 36px;border:1px solid var(--border);border-radius:20px;background:var(--surface);color:var(--text);font-size:14px;outline:none;font-family:inherit}
-.search-wrap i{position:absolute;left:11px;top:50%;transform:translateY(-50%);color:var(--text3);font-size:17px}
-.chips{display:flex;gap:6px;overflow-x:auto;padding-bottom:8px;margin-bottom:14px;scrollbar-width:none}
-.chips::-webkit-scrollbar{display:none}
-.chip{background:var(--surface);border:1px solid var(--border);border-radius:20px;padding:5px 14px;font-size:12px;cursor:pointer;color:var(--text2);white-space:nowrap;flex-shrink:0;font-family:inherit}
-.chip.active{background:var(--pink);color:#fff;border-color:var(--pink)}
-.grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(160px,1fr));gap:12px}
-.card{background:var(--surface);border:1px solid var(--border);border-radius:var(--radius);overflow:hidden;cursor:pointer;-webkit-tap-highlight-color:transparent}
-.card-thumb{width:100%;height:140px;background:var(--bg);display:flex;align-items:center;justify-content:center;position:relative;overflow:hidden}
+body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;background:var(--bg);color:var(--text);min-height:100vh;padding-bottom:72px}
+.header{background:#fff;border-bottom:1.5px solid var(--border);padding:12px 14px 10px;position:sticky;top:0;z-index:20}
+.header-top{display:flex;align-items:center;justify-content:space-between;margin-bottom:10px}
+.logo{display:flex;align-items:center;gap:8px;font-size:17px;font-weight:700;color:var(--text)}
+.logo-icon{width:32px;height:32px;background:var(--rose-l);border-radius:10px;display:flex;align-items:center;justify-content:center}
+.hbtn{height:34px;padding:0 12px;border-radius:20px;border:1.5px solid var(--border);background:#fff;font-size:12px;font-weight:600;color:var(--text2);cursor:pointer;display:flex;align-items:center;gap:5px;font-family:inherit;-webkit-tap-highlight-color:transparent}
+.hbtn:active{opacity:.7}
+.search-row{position:relative}
+.search-row input{width:100%;padding:9px 12px 9px 34px;border:1.5px solid var(--border);border-radius:20px;background:var(--bg);color:var(--text);font-size:14px;outline:none;font-family:inherit}
+.search-row input:focus{border-color:var(--rose-d)}
+.search-row i{position:absolute;left:10px;top:50%;transform:translateY(-50%);color:var(--text3);font-size:16px}
+.chips-scroll{display:flex;gap:6px;overflow-x:auto;padding:10px 14px 6px;scrollbar-width:none}
+.chips-scroll::-webkit-scrollbar{display:none}
+.chip{padding:5px 14px;border-radius:20px;font-size:12px;font-weight:600;cursor:pointer;white-space:nowrap;border:1.5px solid transparent;font-family:inherit;flex-shrink:0;-webkit-tap-highlight-color:transparent}
+.app{padding:12px 14px}
+.grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:11px}
+.card{background:#fff;border-radius:var(--r);border:1.5px solid var(--border);overflow:hidden;cursor:pointer;-webkit-tap-highlight-color:transparent}
+.card:active{opacity:.85}
+.card-thumb{width:100%;height:140px;background:#fdf0f6;display:flex;align-items:center;justify-content:center;position:relative;overflow:hidden}
 .card-thumb img{width:100%;height:100%;object-fit:cover}
-.card-thumb .no-img{font-size:36px;color:var(--text3)}
-.card-thumb .cat-badge{position:absolute;top:6px;left:6px;background:rgba(0,0,0,0.6);color:#fff;font-size:10px;padding:2px 8px;border-radius:10px}
+.ph{font-size:30px;color:var(--text3)}
+.cat-pill{position:absolute;top:7px;left:7px;font-size:10px;font-weight:700;padding:3px 9px;border-radius:20px}
+.rating-pill{position:absolute;top:7px;right:7px;background:rgba(255,255,255,.92);font-size:11px;padding:3px 7px;border-radius:20px;color:var(--text);font-weight:600}
 .card-body{padding:8px 10px 10px}
-.card-title{font-size:12px;font-weight:500;line-height:1.4;margin-bottom:4px;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden}
-.card-sub{font-size:10px;color:var(--text2);margin-bottom:6px}
+.card-title{font-size:12px;font-weight:600;line-height:1.4;margin-bottom:5px;color:var(--text);display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden}
+.card-tags{display:flex;flex-wrap:wrap;gap:3px;margin-bottom:6px;min-height:18px}
+.tag{font-size:10px;font-weight:600;padding:2px 8px;border-radius:20px}
 .card-footer{display:flex;align-items:center;justify-content:space-between}
-.stars-sm{font-size:11px;letter-spacing:1px}
-.star-on{color:#f59e0b}
-.star-off{color:var(--border)}
-.card-del{background:none;border:none;cursor:pointer;padding:2px;color:var(--text3);font-size:14px;font-family:inherit}
-.fab{position:fixed;bottom:24px;right:20px;width:56px;height:56px;border-radius:50%;background:var(--pink);color:#fff;border:none;font-size:26px;cursor:pointer;display:flex;align-items:center;justify-content:center;box-shadow:0 4px 16px rgba(225,48,108,0.4);z-index:20;-webkit-tap-highlight-color:transparent}
+.stars{font-size:11px;letter-spacing:1px}
+.card-del{background:none;border:none;cursor:pointer;padding:3px;color:var(--text3);font-size:14px;font-family:inherit;-webkit-tap-highlight-color:transparent}
 .empty{text-align:center;padding:3rem 1rem;color:var(--text2);grid-column:1/-1}
-.empty i{font-size:48px;opacity:0.25;display:block;margin-bottom:12px}
-
-/* Modal */
-.overlay{position:fixed;inset:0;background:rgba(0,0,0,0.5);z-index:50;display:flex;align-items:flex-end;justify-content:center}
-.sheet{background:var(--surface);border-radius:20px 20px 0 0;width:100%;max-width:680px;max-height:92vh;overflow-y:auto;padding:0 0 env(safe-area-inset-bottom)}
-.sheet-handle{width:36px;height:4px;background:var(--border);border-radius:2px;margin:12px auto 0}
-.sheet-header{display:flex;align-items:center;justify-content:space-between;padding:14px 16px;border-bottom:1px solid var(--border)}
-.sheet-header h2{font-size:16px;font-weight:600}
-.sheet-body{padding:16px}
-.field{margin-bottom:14px}
-.field label{display:block;font-size:12px;color:var(--text2);margin-bottom:5px;font-weight:500}
-.field input,.field select,.field textarea{width:100%;padding:10px 12px;border:1px solid var(--border);border-radius:var(--radius-sm);background:var(--surface);color:var(--text);font-size:14px;outline:none;font-family:inherit;-webkit-appearance:none}
-.field input:focus,.field select:focus,.field textarea:focus{border-color:var(--pink)}
-.field textarea{resize:none;height:70px}
+.empty i{font-size:44px;opacity:.2;display:block;margin-bottom:12px}
+.section-title{font-size:11px;font-weight:700;color:var(--text2);text-transform:uppercase;letter-spacing:.05em;margin-bottom:8px;display:flex;align-items:center;justify-content:space-between}
+.cat-section{border-radius:var(--rsm);padding:10px 12px;margin-bottom:8px;border:1.5px solid}
+.cat-row{display:flex;align-items:center;justify-content:space-between;margin-bottom:4px}
+.cat-label{font-size:13px;font-weight:700}
+.sub-chips{display:flex;flex-wrap:wrap;gap:4px}
+.sub-chip{font-size:10px;background:#fff;padding:2px 8px;border-radius:20px;font-weight:600}
+.del-btn{background:none;border:none;cursor:pointer;font-size:15px;padding:2px;font-family:inherit}
+.new-box{background:var(--bg);border:1.5px dashed var(--rose);border-radius:var(--rsm);padding:12px}
+.new-box input{width:100%;padding:9px 11px;border:1.5px solid var(--border);border-radius:var(--rsm);background:#fff;color:var(--text);font-size:13px;outline:none;font-family:inherit;margin-bottom:8px}
+.new-box input:focus{border-color:var(--rose-d)}
+.subs-wrap{display:flex;flex-wrap:wrap;gap:5px;margin-bottom:8px}
+.sub-rm{background:var(--rose-l);color:var(--rose-d);border:none;border-radius:20px;padding:3px 10px;font-size:11px;font-weight:600;cursor:pointer;display:flex;align-items:center;gap:3px;font-family:inherit}
+.add-sub-row{display:flex;gap:6px}
+.add-sub-row input{flex:1;padding:8px 10px;border:1.5px solid var(--border);border-radius:var(--rsm);background:#fff;color:var(--text);font-size:13px;outline:none;font-family:inherit}
+.add-sub-row input:focus{border-color:var(--rose-d)}
+.add-sub-row button{background:var(--rose-d);color:#fff;border:none;border-radius:var(--rsm);padding:8px 16px;font-size:15px;font-weight:700;cursor:pointer;font-family:inherit}
+.save-btn-full{width:100%;padding:11px;border-radius:var(--rsm);font-size:13px;font-weight:700;cursor:pointer;font-family:inherit;border:none;color:#fff;margin-top:8px;display:flex;align-items:center;justify-content:center;gap:6px}
+.color-dots{display:flex;gap:6px;flex-wrap:wrap}
+.dot{width:24px;height:24px;border-radius:50%;cursor:pointer;border:2.5px solid transparent;-webkit-tap-highlight-color:transparent}
+.dot.sel{border-color:var(--text)}
+.tag-opt{padding:6px 13px;border-radius:20px;font-size:12px;font-weight:600;cursor:pointer;border:2px solid transparent;font-family:inherit;-webkit-tap-highlight-color:transparent}
+.tag-opt.sel{border-color:currentColor}
+.add-inline-btn{background:var(--rose-l);color:var(--rose-d);border:none;border-radius:20px;padding:4px 10px;font-size:11px;font-weight:700;cursor:pointer;font-family:inherit;display:flex;align-items:center;gap:3px}
+.fab{position:fixed;bottom:80px;right:18px;width:52px;height:52px;border-radius:50%;background:var(--rose-d);color:#fff;border:none;font-size:24px;cursor:pointer;display:flex;align-items:center;justify-content:center;z-index:30;-webkit-tap-highlight-color:transparent}
+.fab:active{opacity:.8}
+.bottom-nav{position:fixed;bottom:0;left:0;right:0;background:#fff;border-top:1.5px solid var(--border);display:flex;z-index:25;padding-bottom:env(safe-area-inset-bottom,0px)}
+.nav-btn{flex:1;padding:10px 4px 8px;display:flex;flex-direction:column;align-items:center;gap:3px;font-size:10px;font-weight:600;color:var(--text2);cursor:pointer;background:none;border:none;font-family:inherit;-webkit-tap-highlight-color:transparent}
+.nav-btn.active{color:var(--rose-d)}
+.nav-btn i{font-size:20px}
+.overlay{position:fixed;inset:0;background:rgba(60,30,50,.45);z-index:50;display:flex;align-items:flex-end;justify-content:center}
+.sheet{background:#fff;border-radius:22px 22px 0 0;width:100%;max-height:92vh;overflow-y:auto;padding-bottom:env(safe-area-inset-bottom,16px)}
+.handle{width:36px;height:4px;background:var(--border);border-radius:2px;margin:12px auto 0}
+.shead{display:flex;align-items:center;justify-content:space-between;padding:12px 16px;border-bottom:1.5px solid var(--border)}
+.shead h2{font-size:15px;font-weight:700;color:var(--text)}
+.xbtn{width:30px;height:30px;border-radius:8px;background:var(--rose-l);border:none;cursor:pointer;display:flex;align-items:center;justify-content:center;color:var(--rose-d);font-size:16px;-webkit-tap-highlight-color:transparent}
+.sbody{padding:14px 16px}
+.field{margin-bottom:12px}
+.field label{display:block;font-size:11px;font-weight:700;color:var(--text2);margin-bottom:5px;text-transform:uppercase;letter-spacing:.05em}
+.field input,.field select,.field textarea{width:100%;padding:10px 12px;border:1.5px solid var(--border);border-radius:var(--rsm);background:var(--bg);color:var(--text);font-size:14px;outline:none;font-family:inherit;-webkit-appearance:none}
+.field input:focus,.field select:focus,.field textarea:focus{border-color:var(--rose-d)}
+.field textarea{resize:none;height:66px}
 .field-row{display:grid;grid-template-columns:1fr 1fr;gap:10px}
-.star-pick{display:flex;gap:6px;padding:4px 0}
-.star-pick span{font-size:28px;cursor:pointer;-webkit-tap-highlight-color:transparent}
-.sheet-footer{padding:12px 16px;border-top:1px solid var(--border);display:flex;gap:10px}
-.sheet-footer .btn{flex:1;justify-content:center;padding:12px}
-.link-hint{font-size:11px;color:var(--text3);margin-top:4px;word-break:break-all}
-
-/* Detail sheet */
-.detail-img{width:100%;max-height:220px;object-fit:cover}
-.detail-rows{padding:0 16px}
-.drow{display:flex;gap:10px;padding:10px 0;border-bottom:1px solid var(--border);align-items:baseline}
-.drow:last-child{border-bottom:none}
-.dlbl{font-size:12px;color:var(--text2);min-width:100px}
-.dval{font-size:13px;flex:1;word-break:break-all}
-.dval a{color:var(--pink);text-decoration:none}
-
-/* Share received banner */
-.share-banner{background:#e8f5e9;border:1px solid #a5d6a7;border-radius:var(--radius-sm);padding:10px 14px;margin-bottom:14px;font-size:13px;color:#2e7d32;display:flex;align-items:center;gap:8px}
+.star-pick{display:flex;gap:4px}
+.star-pick span{font-size:28px;cursor:pointer;color:var(--border);-webkit-tap-highlight-color:transparent}
+.star-pick span.on{color:#f9c9a0}
+.sfoot{padding:12px 16px 0;border-top:1.5px solid var(--border);display:flex;gap:8px}
+.sfoot button{flex:1;padding:12px;border-radius:var(--rsm);font-size:13px;font-weight:700;cursor:pointer;font-family:inherit;border:1.5px solid var(--border);-webkit-tap-highlight-color:transparent}
+.btn-cancel{background:var(--bg);color:var(--text2)}
+.btn-save{background:var(--rose-d);color:#fff;border-color:var(--rose-d)}
+.banner{background:#e2f5ed;border:1.5px solid #a8dfc9;border-radius:var(--rsm);padding:8px 12px;font-size:12px;color:#3a8a67;display:flex;align-items:center;gap:7px;margin-bottom:12px}
+.detail-img{width:100%;height:200px;object-fit:cover}
+.detail-body{padding:12px 16px}
+.drow{display:flex;gap:10px;padding:9px 0;border-bottom:1px solid var(--border);align-items:flex-start}
+.drow:last-child{border:none}
+.dlbl{font-size:10px;font-weight:700;color:var(--text2);min-width:82px;text-transform:uppercase;letter-spacing:.04em;padding-top:2px}
+.dval{font-size:13px;color:var(--text);flex:1;word-break:break-all}
+.dval a{color:var(--rose-d);text-decoration:none}
 </style>
 </head>
 <body>
 
 <div class="header">
-  <h1><i class="ti ti-bookmark-filled"></i> Mis Saves</h1>
-  <button class="btn" onclick="exportCSV()"><i class="ti ti-download"></i> Exportar</button>
+  <div class="header-top">
+    <div class="logo">
+      <div class="logo-icon"><i class="ti ti-bookmark" style="color:#c4638a;font-size:17px" aria-hidden="true"></i></div>
+      Mis Saves
+    </div>
+    <button class="hbtn" onclick="exportData()"><i class="ti ti-download" style="font-size:14px" aria-hidden="true"></i> Exportar</button>
+  </div>
+  <div class="search-row">
+    <i class="ti ti-search" aria-hidden="true"></i>
+    <input type="text" id="search" placeholder="Buscar posts, categorías, tags..." oninput="render()">
+  </div>
 </div>
+
+<div class="chips-scroll" id="chips"></div>
 
 <div class="app">
-  <div class="stats" id="stats"></div>
-  <div class="search-wrap">
-    <i class="ti ti-search"></i>
-    <input type="text" id="search" placeholder="Buscar posts..." oninput="render()">
+  <div id="view-home"><div class="grid" id="grid"></div></div>
+
+  <div id="view-cats" style="display:none">
+    <div class="section-title">Mis categorías</div>
+    <div id="cat-list"></div>
+    <div style="margin-top:14px">
+      <div class="section-title">Nueva categoría</div>
+      <div class="new-box">
+        <input type="text" id="nc-name" placeholder="Nombre (ej: Cafeterías, Postres...)">
+        <div class="subs-wrap" id="nc-subs"></div>
+        <div class="add-sub-row">
+          <input type="text" id="nc-sub" placeholder="Agregar subcategoría..." onkeydown="if(event.key==='Enter')addSub()">
+          <button onclick="addSub()">+</button>
+        </div>
+        <button class="save-btn-full" style="background:var(--rose-d)" onclick="saveCat()"><i class="ti ti-check" aria-hidden="true"></i> Guardar categoría</button>
+      </div>
+    </div>
   </div>
-  <div class="chips" id="chips"></div>
-  <div class="grid" id="grid"></div>
+
+  <div id="view-tags" style="display:none">
+    <div class="section-title">Mis tags</div>
+    <div id="tag-list-full" style="display:flex;flex-wrap:wrap;gap:7px;margin-bottom:16px"></div>
+    <div class="section-title">Nuevo tag</div>
+    <div class="new-box">
+      <div style="margin-bottom:10px">
+        <div style="font-size:11px;font-weight:700;color:var(--text2);text-transform:uppercase;letter-spacing:.05em;margin-bottom:5px">Nombre</div>
+        <input type="text" id="nt-name" placeholder="Ej: Pollo, Vegano, Sin TACC, Picante..." oninput="updateTagPrev()" style="width:100%;padding:9px 11px;border:1.5px solid var(--border);border-radius:var(--rsm);background:#fff;color:var(--text);font-size:13px;outline:none;font-family:inherit">
+      </div>
+      <div style="margin-bottom:10px">
+        <div style="font-size:11px;font-weight:700;color:var(--text2);text-transform:uppercase;letter-spacing:.05em;margin-bottom:6px">Color</div>
+        <div class="color-dots" id="nt-dots"></div>
+      </div>
+      <div style="margin-bottom:10px">
+        <div style="font-size:11px;font-weight:700;color:var(--text2);text-transform:uppercase;letter-spacing:.05em;margin-bottom:5px">Vista previa</div>
+        <span id="nt-prev" style="display:inline-block;padding:4px 14px;border-radius:20px;font-size:12px;font-weight:700;background:var(--rose-l);color:var(--rose-d)">mi tag</span>
+      </div>
+      <button class="save-btn-full" style="background:#7c5cbf" onclick="saveTag()"><i class="ti ti-check" aria-hidden="true"></i> Guardar tag</button>
+    </div>
+  </div>
 </div>
 
-<button class="fab" onclick="openAdd()" aria-label="Agregar post">
-  <i class="ti ti-plus"></i>
-</button>
+<button class="fab" id="fab" onclick="openAdd()" aria-label="Agregar post"><i class="ti ti-plus" aria-hidden="true"></i></button>
+
+<div class="bottom-nav">
+  <button class="nav-btn active" id="nav-home" onclick="goTab('home')"><i class="ti ti-layout-grid" aria-hidden="true"></i>Mis Saves</button>
+  <button class="nav-btn" id="nav-cats" onclick="goTab('cats')"><i class="ti ti-category" aria-hidden="true"></i>Categorías</button>
+  <button class="nav-btn" id="nav-tags" onclick="goTab('tags')"><i class="ti ti-tag" aria-hidden="true"></i>Tags</button>
+</div>
 
 <!-- Add/Edit Sheet -->
-<div class="overlay" id="add-modal" style="display:none" onclick="handleOverlayClick(event,'add-modal')">
+<div class="overlay" id="modal-add" style="display:none" onclick="bgClose(event,'modal-add')">
   <div class="sheet">
-    <div class="sheet-handle"></div>
-    <div class="sheet-header">
+    <div class="handle"></div>
+    <div class="shead">
       <h2 id="modal-title">Agregar post</h2>
-      <button class="btn" onclick="closeAdd()"><i class="ti ti-x"></i></button>
+      <button class="xbtn" onclick="closeM('modal-add')"><i class="ti ti-x" aria-hidden="true"></i></button>
     </div>
-    <div class="sheet-body">
-      <div id="share-banner" style="display:none" class="share-banner">
-        <i class="ti ti-share"></i> Link recibido desde Instagram
-      </div>
-      <div class="field">
-        <label>Link de Instagram *</label>
-        <input type="url" id="f-link" placeholder="https://www.instagram.com/reel/..." oninput="onLinkChange()">
-        <div class="link-hint" id="link-hint"></div>
-      </div>
-      <div class="field">
-        <label>Título *</label>
-        <input type="text" id="f-title" placeholder="Ej: Focaccia de romero y aceitunas">
-      </div>
+    <div class="sbody">
+      <div id="share-banner" class="banner" style="display:none"><i class="ti ti-share" aria-hidden="true"></i> Link recibido desde Instagram</div>
+      <div class="field"><label>Link *</label><input type="url" id="f-link" placeholder="https://www.instagram.com/reel/..."></div>
+      <div class="field"><label>Título *</label><input type="text" id="f-title" placeholder="Ej: Focaccia de romero con aceitunas"></div>
       <div class="field-row">
         <div class="field">
-          <label>Categoría *</label>
-          <select id="f-cat" onchange="updateSubcats()">
-            <option value="">Elegir...</option>
-          </select>
+          <label style="display:flex;align-items:center;justify-content:space-between;gap:4px">Categoría<button class="add-inline-btn" onclick="goTabClose('cats')"><i class="ti ti-plus" style="font-size:11px" aria-hidden="true"></i>Nueva</button></label>
+          <select id="f-cat" onchange="updateSubcats()"><option value="">Elegir...</option></select>
         </div>
-        <div class="field">
-          <label>Subcategoría</label>
-          <select id="f-sub"><option value="">Elegir...</option></select>
-        </div>
+        <div class="field"><label>Subcategoría</label><select id="f-sub"><option value="">Elegir...</option></select></div>
       </div>
       <div class="field">
-        <label>URL de foto (opcional)</label>
-        <input type="url" id="f-img" placeholder="https://...">
+        <label style="display:flex;align-items:center;justify-content:space-between;gap:4px">Tags<button class="add-inline-btn" onclick="goTabClose('tags')"><i class="ti ti-plus" style="font-size:11px" aria-hidden="true"></i>Nuevo</button></label>
+        <div id="tags-form" style="display:flex;flex-wrap:wrap;gap:5px;margin-top:4px"></div>
       </div>
-      <div class="field">
-        <label>Notas</label>
-        <textarea id="f-note" placeholder="Comentarios, dónde probarlo, tips..."></textarea>
-      </div>
-      <div class="field">
-        <label>Puntuación</label>
-        <div class="star-pick" id="star-pick">
-          <span onclick="setPick(1)">☆</span>
-          <span onclick="setPick(2)">☆</span>
-          <span onclick="setPick(3)">☆</span>
-          <span onclick="setPick(4)">☆</span>
-          <span onclick="setPick(5)">☆</span>
-        </div>
-      </div>
+      <div class="field"><label>Foto (URL)</label><input type="url" id="f-img" placeholder="https://..."></div>
+      <div class="field"><label>Notas</label><textarea id="f-note" placeholder="Comentarios, tips, dónde probarlo..."></textarea></div>
+      <div class="field"><label>Puntuación</label><div class="star-pick" id="star-pick"><span onclick="setPick(1)">★</span><span onclick="setPick(2)">★</span><span onclick="setPick(3)">★</span><span onclick="setPick(4)">★</span><span onclick="setPick(5)">★</span></div></div>
     </div>
-    <div class="sheet-footer">
-      <button class="btn" onclick="closeAdd()">Cancelar</button>
-      <button class="btn btn-primary" onclick="savePost()"><i class="ti ti-check"></i> Guardar</button>
+    <div class="sfoot">
+      <button class="btn-cancel" onclick="closeM('modal-add')">Cancelar</button>
+      <button class="btn-save" onclick="savePost()"><i class="ti ti-check" aria-hidden="true"></i> Guardar</button>
     </div>
   </div>
 </div>
 
 <!-- Detail Sheet -->
-<div class="overlay" id="detail-modal" style="display:none" onclick="handleOverlayClick(event,'detail-modal')">
+<div class="overlay" id="modal-detail" style="display:none" onclick="bgClose(event,'modal-detail')">
   <div class="sheet">
-    <div class="sheet-handle"></div>
-    <div class="sheet-header">
-      <h2 id="d-title">Detalle</h2>
-      <button class="btn" onclick="closeDetail()"><i class="ti ti-x"></i></button>
+    <div class="handle"></div>
+    <div class="shead">
+      <h2 id="d-title" style="max-width:85%;overflow:hidden;text-overflow:ellipsis;white-space:nowrap">Detalle</h2>
+      <button class="xbtn" onclick="closeM('modal-detail')"><i class="ti ti-x" aria-hidden="true"></i></button>
     </div>
     <div id="d-content"></div>
-    <div class="sheet-footer">
-      <button class="btn" onclick="editFromDetail()"><i class="ti ti-edit"></i> Editar</button>
-      <button class="btn btn-primary" id="d-open-btn"><i class="ti ti-brand-instagram"></i> Abrir</button>
+    <div class="sfoot">
+      <button class="btn-cancel" onclick="editFromDetail()"><i class="ti ti-edit" aria-hidden="true"></i> Editar</button>
+      <button class="btn-save" id="d-open"><i class="ti ti-brand-instagram" aria-hidden="true"></i> Abrir en Instagram</button>
     </div>
   </div>
 </div>
 
 <script>
-const CATS = {
-  "Restaurantes":["Parrilla","Pasta","Japonesa","Pizza","Mariscos","Cafetería","Brunch","Otro"],
-  "Comidas":["Desayuno","Almuerzo","Cena","Snack","Bebidas","Vegano","Otro"],
-  "Panadería":["Pan artesanal","Facturas","Medialunas","Sin gluten","Otro"],
-  "Pastelería":["Tortas","Galletitas","Macarons","Tartas","Brownie","Otro"],
-  "Cosas para comprar":["Ropa","Hogar","Tecnología","Belleza","Libros","Otro"],
-  "Viajes":["Hoteles","Lugares","Restaurantes","Tips","Otro"],
-  "Fitness":["Ejercicios","Recetas fit","Motivación","Otro"],
-  "DIY / Manualidades":["Decoración","Tejido","Pintura","Otro"],
-  "Otro":["General"]
-};
+const COLORS=[
+  ['#fde8f0','#c4638a'],['#ede8fb','#7c5cbf'],['#e2f5ed','#3a8a67'],
+  ['#fef0e3','#b06830'],['#e3f2fd','#2976b8'],['#fdfae3','#8a7a18'],
+  ['#f2e8fd','#7030b0'],['#e8f5e3','#3a6830'],['#fdeee8','#b04030']
+];
+let data=[],cats={},tags=[],editId=null,viewId=null,filterCat='all',pickRating=0;
+let formTags=[],ncSubs=[],ntColor=0;
 
-let data = [], editId = null, viewId = null, filterCat = 'all', pickRating = 0;
-
-function loadData() {
-  try { data = JSON.parse(localStorage.getItem('ig_saves') || '[]'); } catch(e) { data = []; }
+function load(){
+  try{data=JSON.parse(localStorage.getItem('ig_v3')||'[]')}catch(e){data=[]}
+  try{const c=JSON.parse(localStorage.getItem('ig_cats2'));cats=c||defCats()}catch(e){cats=defCats()}
+  try{const t=JSON.parse(localStorage.getItem('ig_tags2'));tags=t&&t.length?t:defTags()}catch(e){tags=defTags()}
 }
-function saveData() {
-  localStorage.setItem('ig_saves', JSON.stringify(data));
+function persist(){
+  localStorage.setItem('ig_v3',JSON.stringify(data));
+  localStorage.setItem('ig_cats2',JSON.stringify(cats));
+  localStorage.setItem('ig_tags2',JSON.stringify(tags));
 }
+function defCats(){return{"Restaurantes":["Parrilla","Pasta","Japonesa","Pizza","Mariscos","Brunch"],"Panadería":["Pan artesanal","Facturas","Sin gluten"],"Pastelería":["Tortas","Galletitas","Macarons","Tartas"],"Comidas":["Desayuno","Almuerzo","Cena","Snack"],"Cosas para comprar":["Ropa","Hogar","Tecnología","Belleza"],"Viajes":["Hoteles","Lugares","Tips"],"Fitness":["Ejercicios","Recetas fit"]}}
+function defTags(){return[{id:'t1',name:'Imperdible',ci:0},{id:'t2',name:'Pendiente',ci:5},{id:'t3',name:'Ya fui',ci:2},{id:'t4',name:'Sin TACC',ci:7},{id:'t5',name:'Vegano',ci:3}]}
+function catClr(cat){const i=Object.keys(cats).indexOf(cat);return COLORS[i%COLORS.length]||COLORS[0]}
+function tagClr(t){return COLORS[t.ci%COLORS.length]}
+function tagById(id){return tags.find(t=>t.id===id)}
+function esc(s){return(s||'').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;')}
+function starsHtml(r){return[1,2,3,4,5].map(i=>`<span style="color:${i<=r?'#f9c9a0':'#f0e0eb'}">★</span>`).join('')}
 
-function buildStats() {
-  const total = data.length;
-  const cats = new Set(data.map(d=>d.cat).filter(Boolean)).size;
-  const rated = data.filter(d=>d.rating>0);
-  const avg = rated.length ? (rated.reduce((s,d)=>s+d.rating,0)/rated.length).toFixed(1) : '-';
-  const fivestar = data.filter(d=>d.rating===5).length;
-  document.getElementById('stats').innerHTML = `
-    <div class="stat"><div class="stat-num">${total}</div><div class="stat-lbl">Guardados</div></div>
-    <div class="stat"><div class="stat-num">${cats}</div><div class="stat-lbl">Categorías</div></div>
-    <div class="stat"><div class="stat-num">${avg}</div><div class="stat-lbl">Promedio</div></div>
-    <div class="stat"><div class="stat-num">${fivestar}</div><div class="stat-lbl">5 ★</div></div>
-  `;
-}
-
-function buildChips() {
-  const used = [...new Set(data.map(d=>d.cat).filter(Boolean))].sort();
-  let html = `<button class="chip ${filterCat==='all'?'active':''}" onclick="setFilter('all')">Todos (${data.length})</button>`;
-  used.forEach(c => {
-    const n = data.filter(d=>d.cat===c).length;
-    html += `<button class="chip ${filterCat===c?'active':''}" onclick="setFilter('${c}')">${c} (${n})</button>`;
+function goTab(tab){
+  ['home','cats','tags'].forEach(t=>{
+    document.getElementById('view-'+t).style.display=t===tab?'':'none';
+    document.getElementById('nav-'+t).classList.toggle('active',t===tab);
   });
-  document.getElementById('chips').innerHTML = html;
+  document.getElementById('chips').style.display=tab==='home'?'':'none';
+  document.getElementById('fab').style.display=tab==='home'?'flex':'none';
+  if(tab==='cats')renderCats();
+  if(tab==='tags'){renderTagsFull();buildNtDots()}
 }
+function goTabClose(tab){closeM('modal-add');goTab(tab)}
 
-function starsHtml(r, size='sm') {
-  return [1,2,3,4,5].map(i=>`<span class="${i<=r?'star-on':'star-off'}">${i<=r?'★':'☆'}</span>`).join('');
+function buildChips(){
+  const used=[...new Set(data.map(d=>d.cat).filter(Boolean))];
+  let html=`<button class="chip" style="background:var(--rose-l);color:var(--rose-d);border-color:#c4638a40;opacity:${filterCat==='all'?1:.55}" onclick="setFilter('all')">Todos (${data.length})</button>`;
+  used.forEach(c=>{const[bg,txt]=catClr(c);const n=data.filter(d=>d.cat===c).length;html+=`<button class="chip" style="background:${bg};color:${txt};border-color:${txt}40;opacity:${filterCat===c?1:.55}" onclick="setFilter('${esc(c)}')">${esc(c)} (${n})</button>`;});
+  document.getElementById('chips').innerHTML=html;
 }
-
-function getFiltered() {
-  const q = (document.getElementById('search').value||'').toLowerCase();
-  return data.filter(d => {
-    const matchCat = filterCat==='all' || d.cat===filterCat;
-    const matchQ = !q || [d.title,d.cat,d.sub,d.note].some(v=>(v||'').toLowerCase().includes(q));
-    return matchCat && matchQ;
-  });
+function getFiltered(){
+  const q=(document.getElementById('search').value||'').toLowerCase();
+  return data.filter(d=>{const mc=filterCat==='all'||d.cat===filterCat;const mq=!q||[d.title,d.cat,d.sub,d.note,...(d.tags||[]).map(id=>tagById(id)?.name||'')].some(v=>(v||'').toLowerCase().includes(q));return mc&&mq});
 }
+function setFilter(c){filterCat=c;render()}
 
-function render() {
-  buildStats();
+function render(){
   buildChips();
-  const items = getFiltered();
-  const grid = document.getElementById('grid');
-  if (!items.length) {
-    grid.innerHTML = `<div class="empty"><i class="ti ti-bookmark"></i><p>${data.length?'Sin resultados para esa búsqueda.':'Tocá + para agregar tu primer post.'}</p></div>`;
-    return;
-  }
-  grid.innerHTML = items.map(item => `
-    <div class="card" onclick="openDetail('${item.id}')">
-      <div class="card-thumb">
-        ${item.img
-          ? `<img src="${item.img}" onerror="this.parentNode.innerHTML='<div class=no-img><i class=ti-photo></i></div>'" loading="lazy">`
-          : `<div class="no-img"><i class="ti ti-photo"></i></div>`}
-        ${item.cat ? `<div class="cat-badge">${item.cat}</div>` : ''}
-      </div>
-      <div class="card-body">
-        <div class="card-title">${escHtml(item.title)}</div>
-        ${item.sub ? `<div class="card-sub">${escHtml(item.sub)}</div>` : ''}
-        <div class="card-footer">
-          <div class="stars-sm">${starsHtml(item.rating||0)}</div>
-          <button class="card-del" onclick="event.stopPropagation();delPost('${item.id}')"><i class="ti ti-trash"></i></button>
-        </div>
-      </div>
-    </div>
-  `).join('');
+  const items=getFiltered();
+  const grid=document.getElementById('grid');
+  if(!items.length){grid.innerHTML=`<div class="empty"><i class="ti ti-bookmark" aria-hidden="true"></i><p style="font-size:13px;margin-top:4px">${data.length?'Sin resultados.':'¡Tocá + para tu primer save!'}</p></div>`;return}
+  grid.innerHTML=items.map(item=>{
+    const[bg,txt]=item.cat?catClr(item.cat):COLORS[0];
+    const tagChips=(item.tags||[]).slice(0,2).map(id=>{const t=tagById(id);if(!t)return'';const[tbg,ttxt]=tagClr(t);return`<span class="tag" style="background:${tbg};color:${ttxt}">${esc(t.name)}</span>`}).join('');
+    return`<div class="card" onclick="openDetail('${item.id}')"><div class="card-thumb">${item.img?`<img src="${esc(item.img)}" loading="lazy" onerror="this.parentNode.innerHTML='<div class=ph><i class=ti style=font-size:30px>&#xeb72;</i></div>'">`:`<div class="ph"><i class="ti ti-photo" aria-hidden="true"></i></div>`}${item.cat?`<div class="cat-pill" style="background:${bg};color:${txt}">${esc(item.cat)}</div>`:''}${item.rating?`<div class="rating-pill">★ ${item.rating}</div>`:''}</div><div class="card-body"><div class="card-title">${esc(item.title)}</div><div class="card-tags">${tagChips}</div><div class="card-footer"><div class="stars">${starsHtml(item.rating||0)}</div><button class="card-del" onclick="event.stopPropagation();delPost('${item.id}')"><i class="ti ti-trash" aria-hidden="true"></i></button></div></div></div>`;
+  }).join('');
 }
 
-function setFilter(c) { filterCat = c; render(); }
-
-function escHtml(s) {
-  return (s||'').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');
+function renderCats(){
+  document.getElementById('cat-list').innerHTML=Object.entries(cats).map(([c,subs],i)=>{const[bg,txt]=COLORS[i%COLORS.length];return`<div class="cat-section" style="background:${bg}30;border-color:${bg}"><div class="cat-row"><span class="cat-label" style="color:${txt}">${esc(c)}</span><button class="del-btn" style="color:${txt}" onclick="deleteCat('${esc(c)}')"><i class="ti ti-trash" aria-hidden="true"></i></button></div><div class="sub-chips">${subs.map(s=>`<span class="sub-chip" style="color:${txt}">${esc(s)}</span>`).join('')||`<span style="font-size:11px;opacity:.5;color:${txt}">Sin subcategorías</span>`}</div></div>`;}).join('');
 }
+function renderTagsFull(){
+  document.getElementById('tag-list-full').innerHTML=tags.map(t=>{const[bg,txt]=tagClr(t);return`<span style="display:inline-flex;align-items:center;gap:5px;background:${bg};color:${txt};padding:5px 12px;border-radius:20px;font-size:12px;font-weight:700">${esc(t.name)}<button onclick="deleteTag('${t.id}')" style="background:none;border:none;cursor:pointer;color:${txt};padding:0;font-size:13px;line-height:1;font-family:inherit"><i class="ti ti-x" aria-hidden="true"></i></button></span>`;}).join('');
+}
+function buildNtDots(){document.getElementById('nt-dots').innerHTML=COLORS.map(([bg],i)=>`<div class="dot${i===ntColor?' sel':''}" style="background:${bg}" onclick="pickNtColor(${i})"></div>`).join('')}
+function pickNtColor(i){ntColor=i;buildNtDots();updateTagPrev()}
+function updateTagPrev(){const[bg,txt]=COLORS[ntColor];const p=document.getElementById('nt-prev');if(p){p.style.background=bg;p.style.color=txt;p.textContent=document.getElementById('nt-name').value||'mi tag'}}
+function saveTag(){
+  const name=document.getElementById('nt-name').value.trim();
+  if(!name){alert('Ingresá un nombre para el tag.');return}
+  tags.push({id:'t'+Date.now(),name,ci:ntColor});
+  document.getElementById('nt-name').value='';
+  persist();renderTagsFull();buildNtDots();render();renderTagsForm();
+}
+function deleteTag(id){if(!confirm('¿Eliminar este tag?'))return;tags=tags.filter(t=>t.id!==id);persist();renderTagsFull();render()}
 
-/* ---- Add/Edit ---- */
-function fillCatSelect(val='') {
-  document.getElementById('f-cat').innerHTML =
-    '<option value="">Elegir...</option>' +
-    Object.keys(CATS).map(c=>`<option value="${c}" ${c===val?'selected':''}>${c}</option>`).join('');
+function addSub(){const v=document.getElementById('nc-sub').value.trim();if(v){ncSubs.push(v);document.getElementById('nc-sub').value='';renderNcSubs()}}
+function renderNcSubs(){document.getElementById('nc-subs').innerHTML=ncSubs.map((s,i)=>`<button class="sub-rm" onclick="ncSubs.splice(${i},1);renderNcSubs()"><i class="ti ti-x" style="font-size:11px" aria-hidden="true"></i>${esc(s)}</button>`).join('')}
+function saveCat(){
+  const name=document.getElementById('nc-name').value.trim();
+  if(!name){alert('Ingresá un nombre para la categoría.');return}
+  cats[name]=[...ncSubs];document.getElementById('nc-name').value='';ncSubs=[];renderNcSubs();
+  persist();renderCats();buildChips();fillCatSelectForm('');
+}
+function deleteCat(c){if(!confirm(`¿Eliminar la categoría "${c}"?`))return;delete cats[c];persist();renderCats();render()}
+
+function fillCatSelectForm(val){
+  document.getElementById('f-cat').innerHTML='<option value="">Elegir...</option>'+Object.keys(cats).map(c=>`<option value="${c}"${c===val?' selected':''}>${c}</option>`).join('');
   updateSubcats(val);
 }
+function updateSubcats(cat){const c=cat||document.getElementById('f-cat').value;document.getElementById('f-sub').innerHTML='<option value="">Elegir...</option>'+(cats[c]||[]).map(s=>`<option>${esc(s)}</option>`).join('')}
+function renderTagsForm(){document.getElementById('tags-form').innerHTML=tags.map(t=>{const[bg,txt]=tagClr(t);const sel=formTags.includes(t.id);return`<button class="tag-opt${sel?' sel':''}" style="background:${bg};color:${txt};opacity:${sel?1:.6}" onclick="toggleTag('${t.id}')">${sel?'✓ ':''}${esc(t.name)}</button>`;}).join('')}
+function toggleTag(id){formTags.includes(id)?formTags=formTags.filter(x=>x!==id):formTags.push(id);renderTagsForm()}
+function setPick(n){pickRating=n;document.querySelectorAll('#star-pick span').forEach((el,i)=>el.classList.toggle('on',i<n))}
 
-function updateSubcats(cat) {
-  const c = cat || document.getElementById('f-cat').value;
-  const subs = CATS[c] || [];
-  document.getElementById('f-sub').innerHTML =
-    '<option value="">Elegir...</option>' + subs.map(s=>`<option>${s}</option>`).join('');
+function openAdd(prefill=''){
+  editId=null;pickRating=0;formTags=[];
+  document.getElementById('modal-title').textContent='Agregar post';
+  document.getElementById('f-link').value=prefill;
+  document.getElementById('f-title').value='';
+  document.getElementById('f-img').value='';
+  document.getElementById('f-note').value='';
+  document.getElementById('share-banner').style.display=prefill?'flex':'none';
+  fillCatSelectForm('');setPick(0);renderTagsForm();
+  document.getElementById('modal-add').style.display='flex';
+}
+function openEdit(id){
+  const item=data.find(d=>d.id===id);if(!item)return;
+  editId=id;pickRating=item.rating||0;formTags=[...(item.tags||[])];
+  document.getElementById('modal-title').textContent='Editar post';
+  document.getElementById('f-link').value=item.link||'';
+  document.getElementById('f-title').value=item.title||'';
+  document.getElementById('f-img').value=item.img||'';
+  document.getElementById('f-note').value=item.note||'';
+  document.getElementById('share-banner').style.display='none';
+  fillCatSelectForm(item.cat||'');document.getElementById('f-sub').value=item.sub||'';
+  setPick(pickRating);renderTagsForm();
+  document.getElementById('modal-add').style.display='flex';
+}
+function savePost(){
+  const link=document.getElementById('f-link').value.trim();const title=document.getElementById('f-title').value.trim();
+  if(!link||!title){alert('El link y el título son obligatorios.');return}
+  const post={id:editId||Date.now().toString(),link,title,cat:document.getElementById('f-cat').value,sub:document.getElementById('f-sub').value,img:document.getElementById('f-img').value.trim(),note:document.getElementById('f-note').value.trim(),tags:[...formTags],rating:pickRating,date:editId?(data.find(d=>d.id===editId)||{}).date||new Date().toISOString():new Date().toISOString()};
+  if(editId){const i=data.findIndex(d=>d.id===editId);if(i>=0)data[i]=post}else data.unshift(post);
+  persist();closeM('modal-add');render();
+}
+function delPost(id){if(!confirm('¿Eliminar este post?'))return;data=data.filter(d=>d.id!==id);persist();render()}
+
+function openDetail(id){
+  const item=data.find(d=>d.id===id);if(!item)return;viewId=id;
+  document.getElementById('d-title').textContent=item.title;
+  const tagChips=(item.tags||[]).map(tid=>{const t=tagById(tid);if(!t)return'';const[bg,txt]=tagClr(t);return`<span style="background:${bg};color:${txt};padding:3px 10px;border-radius:20px;font-size:11px;font-weight:700">${esc(t.name)}</span>`}).join('');
+  document.getElementById('d-content').innerHTML=`${item.img?`<img class="detail-img" src="${esc(item.img)}" onerror="this.style.display='none'">`:''}<div class="detail-body"><div class="drow"><span class="dlbl">Categoría</span><span class="dval">${esc(item.cat)||'—'}</span></div><div class="drow"><span class="dlbl">Subcategoría</span><span class="dval">${esc(item.sub)||'—'}</span></div><div class="drow"><span class="dlbl">Tags</span><span class="dval" style="display:flex;flex-wrap:wrap;gap:4px">${tagChips||'—'}</span></div><div class="drow"><span class="dlbl">Puntuación</span><span class="dval" style="font-size:16px">${starsHtml(item.rating||0)}</span></div><div class="drow"><span class="dlbl">Fecha</span><span class="dval">${item.date?new Date(item.date).toLocaleDateString('es-AR'):'—'}</span></div><div class="drow"><span class="dlbl">Notas</span><span class="dval">${esc(item.note)||'Sin notas'}</span></div><div class="drow"><span class="dlbl">Link</span><span class="dval"><a href="${esc(item.link)}" target="_blank">${esc(item.link)}</a></span></div></div>`;
+  document.getElementById('d-open').onclick=()=>window.open(item.link,'_blank');
+  document.getElementById('modal-detail').style.display='flex';
+}
+function editFromDetail(){closeM('modal-detail');openEdit(viewId)}
+function closeM(id){document.getElementById(id).style.display='none'}
+function bgClose(e,id){if(e.target===document.getElementById(id))closeM(id)}
+
+function exportData(){
+  if(!data.length){alert('No hay posts para exportar.');return}
+  const h=['Título','Categoría','Subcategoría','Tags','Puntuación','Notas','Link','Fecha'];
+  const rows=data.map(d=>[d.title,d.cat,d.sub,(d.tags||[]).map(id=>tagById(id)?.name||'').join('|'),d.rating,d.note,d.link,d.date].map(v=>`"${(v||'').toString().replace(/"/g,'""')}"`));
+  const csv=[h,...rows].map(r=>r.join(',')).join('\n');
+  const a=document.createElement('a');a.href='data:text/csv;charset=utf-8,\uFEFF'+encodeURIComponent(csv);a.download='mis-saves.csv';a.click();
 }
 
-function setPick(n) {
-  pickRating = n;
-  document.querySelectorAll('#star-pick span').forEach((el,i) => {
-    el.textContent = i < n ? '★' : '☆';
-    el.style.color = i < n ? '#f59e0b' : 'var(--text3)';
-  });
-}
-
-function onLinkChange() {
-  const v = document.getElementById('f-link').value.trim();
-  document.getElementById('link-hint').textContent = v ? v : '';
-}
-
-function openAdd(prefillLink='') {
-  editId = null; pickRating = 0;
-  document.getElementById('modal-title').textContent = 'Agregar post';
-  document.getElementById('f-link').value = prefillLink;
-  document.getElementById('f-title').value = '';
-  document.getElementById('f-img').value = '';
-  document.getElementById('f-note').value = '';
-  document.getElementById('link-hint').textContent = prefillLink;
-  document.getElementById('share-banner').style.display = prefillLink ? 'flex' : 'none';
-  fillCatSelect();
-  setPick(0);
-  document.getElementById('add-modal').style.display = 'flex';
-}
-
-function closeAdd() { document.getElementById('add-modal').style.display = 'none'; }
-
-function openEdit(id) {
-  const item = data.find(d=>d.id===id); if(!item) return;
-  editId = id; pickRating = item.rating||0;
-  document.getElementById('modal-title').textContent = 'Editar post';
-  document.getElementById('f-link').value = item.link||'';
-  document.getElementById('f-title').value = item.title||'';
-  document.getElementById('f-img').value = item.img||'';
-  document.getElementById('f-note').value = item.note||'';
-  document.getElementById('link-hint').textContent = item.link||'';
-  document.getElementById('share-banner').style.display = 'none';
-  fillCatSelect(item.cat||'');
-  document.getElementById('f-sub').value = item.sub||'';
-  setPick(pickRating);
-  document.getElementById('add-modal').style.display = 'flex';
-}
-
-function savePost() {
-  const link = document.getElementById('f-link').value.trim();
-  const title = document.getElementById('f-title').value.trim();
-  if (!link || !title) { alert('El link y el título son obligatorios.'); return; }
-  const post = {
-    id: editId || Date.now().toString(),
-    link, title,
-    cat: document.getElementById('f-cat').value,
-    sub: document.getElementById('f-sub').value,
-    img: document.getElementById('f-img').value.trim(),
-    note: document.getElementById('f-note').value.trim(),
-    rating: pickRating,
-    date: editId ? (data.find(d=>d.id===editId)||{}).date || new Date().toISOString() : new Date().toISOString()
-  };
-  if (editId) { const i = data.findIndex(d=>d.id===editId); if(i>=0) data[i]=post; }
-  else data.unshift(post);
-  saveData(); closeAdd(); render();
-}
-
-function delPost(id) {
-  if (!confirm('¿Eliminar este post?')) return;
-  data = data.filter(d=>d.id!==id);
-  saveData(); render();
-}
-
-/* ---- Detail ---- */
-function openDetail(id) {
-  const item = data.find(d=>d.id===id); if(!item) return;
-  viewId = id;
-  document.getElementById('d-title').textContent = item.title;
-  document.getElementById('d-content').innerHTML = `
-    ${item.img ? `<img class="detail-img" src="${escHtml(item.img)}" onerror="this.style.display='none'">` : ''}
-    <div class="detail-rows">
-      <div class="drow"><span class="dlbl">Categoría</span><span class="dval">${escHtml(item.cat)||'-'}</span></div>
-      <div class="drow"><span class="dlbl">Subcategoría</span><span class="dval">${escHtml(item.sub)||'-'}</span></div>
-      <div class="drow"><span class="dlbl">Puntuación</span><span class="dval" style="font-size:18px;color:#f59e0b">${starsHtml(item.rating||0)}</span></div>
-      <div class="drow"><span class="dlbl">Fecha</span><span class="dval">${item.date ? new Date(item.date).toLocaleDateString('es-AR') : '-'}</span></div>
-      <div class="drow"><span class="dlbl">Notas</span><span class="dval">${escHtml(item.note)||'Sin notas'}</span></div>
-      <div class="drow"><span class="dlbl">Link</span><span class="dval"><a href="${escHtml(item.link)}" target="_blank">${escHtml(item.link)}</a></span></div>
-    </div>
-  `;
-  document.getElementById('d-open-btn').onclick = () => window.open(item.link, '_blank');
-  document.getElementById('detail-modal').style.display = 'flex';
-}
-
-function closeDetail() { document.getElementById('detail-modal').style.display = 'none'; }
-
-function editFromDetail() { closeDetail(); openEdit(viewId); }
-
-function handleOverlayClick(e, id) {
-  if (e.target === document.getElementById(id)) {
-    document.getElementById(id).style.display = 'none';
-  }
-}
-
-/* ---- Export CSV ---- */
-function exportCSV() {
-  if (!data.length) { alert('No hay posts para exportar.'); return; }
-  const headers = ['Título','Categoría','Subcategoría','Puntuación','Notas','Link','Fecha'];
-  const rows = data.map(d => [d.title,d.cat,d.sub,d.rating,d.note,d.link,d.date].map(v => `"${(v||'').toString().replace(/"/g,'""')}"`));
-  const csv = [headers, ...rows].map(r => r.join(',')).join('\n');
-  const a = document.createElement('a');
-  a.href = 'data:text/csv;charset=utf-8,\uFEFF' + encodeURIComponent(csv);
-  a.download = 'mis-saves.csv';
-  a.click();
-}
-
-/* ---- PWA Share Target ---- */
-async function handleShareTarget() {
-  if ('serviceWorker' in navigator) {
-    navigator.serviceWorker.register('/sw.js');
-  }
-  const params = new URLSearchParams(window.location.search);
-  const sharedUrl = params.get('url') || params.get('text') || '';
-  if (sharedUrl && sharedUrl.includes('instagram.com')) {
-    history.replaceState({}, '', '/');
-    openAdd(sharedUrl.trim());
-  }
-}
-
-loadData();
-render();
-handleShareTarget();
+if('serviceWorker' in navigator)navigator.serviceWorker.register('/sw.js');
+const sp=new URLSearchParams(location.search);
+const su=sp.get('url')||sp.get('text')||'';
+load();render();goTab('home');
+if(su&&su.includes('instagram.com')){history.replaceState({},'','/');openAdd(su.trim())}
 </script>
 </body>
 </html>
