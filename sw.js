@@ -1,4 +1,4 @@
-const CACHE = 'ig-saves-v1';
+const CACHE = 'ig-saves-v2';
 const ASSETS = ['/', '/index.html', '/manifest.json'];
 
 self.addEventListener('install', e => {
@@ -10,23 +10,14 @@ self.addEventListener('install', e => {
 self.addEventListener('activate', e => {
   e.waitUntil(
     caches.keys().then(keys =>
-      Promise.all(keys.filter(k => k !== CACHE).map(k => caches.delete(k)))
+      Promise.all(keys.map(k => caches.delete(k)))
     ).then(() => self.clients.claim())
   );
 });
 
 self.addEventListener('fetch', e => {
-  const url = new URL(e.request.url);
-  if (e.request.method === 'GET' && url.pathname === '/' && url.searchParams.has('url')) {
-    return;
-  }
+  if (e.request.url.includes('supabase.co')) return;
   e.respondWith(
-    caches.match(e.request).then(r => r || fetch(e.request).then(resp => {
-      if (resp && resp.status === 200 && e.request.method === 'GET') {
-        const clone = resp.clone();
-        caches.open(CACHE).then(c => c.put(e.request, clone));
-      }
-      return resp;
-    }))
+    caches.match(e.request).then(r => r || fetch(e.request))
   );
 });
