@@ -260,16 +260,22 @@ async function supaFetch(method,body){
 
 async function loadFromCloud(){
   try{
-    const res=await fetch(`${SUPA_URL}/rest/v1/saves?select=*`,{headers:{'apikey':SUPA_KEY,'Authorization':'Bearer '+SUPA_KEY}});
+    const res=await fetch(`${SUPA_URL}/rest/v1/saves?select=*&t=${Date.now()}`,{
+      cache:'no-store',
+      headers:{'apikey':SUPA_KEY,'Authorization':'Bearer '+SUPA_KEY,'Cache-Control':'no-cache'}
+    });
+    if(!res.ok) throw new Error('HTTP '+res.status);
     const rows=await res.json();
+    if(!Array.isArray(rows)) throw new Error('Bad response');
     const d=rows.find(r=>r.id==='posts');
     const c=rows.find(r=>r.id==='cats');
     const t=rows.find(r=>r.id==='tags');
-    data=d?d.data:[];
-    cats=c?c.data:defCats();
-    tags=t&&t.data&&t.data.length?t.data:defTags();
+    data=d&&Array.isArray(d.data)?d.data:[];
+    cats=c&&c.data&&typeof c.data==='object'?c.data:defCats();
+    tags=t&&Array.isArray(t.data)&&t.data.length?t.data:defTags();
     setSyncStatus('ok');
   }catch(e){
+    console.error('Load error:',e);
     setSyncStatus('error');
     data=[];cats=defCats();tags=defTags();
   }
