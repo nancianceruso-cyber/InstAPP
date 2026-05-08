@@ -199,8 +199,18 @@ body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;backgrou
         <div class="field"><label>Subcategoría</label><select id="f-sub"><option value="">Elegir...</option></select></div>
       </div>
       <div class="field">
-        <label style="display:flex;align-items:center;justify-content:space-between">Tags<button class="add-inline-btn" onclick="goTabClose('tags')"><i class="ti ti-plus" style="font-size:11px"></i>Nuevo</button></label>
+        <label style="display:flex;align-items:center;justify-content:space-between">Tags<button class="add-inline-btn" onclick="toggleInlineTag()"><i class="ti ti-plus" style="font-size:11px"></i>Nuevo</button></label>
         <div id="tags-form" style="display:flex;flex-wrap:wrap;gap:5px;margin-top:4px"></div>
+        <div id="inline-tag-box" style="display:none;margin-top:8px;background:var(--bg);border:1.5px dashed var(--rose);border-radius:var(--rsm);padding:10px">
+          <div style="font-size:11px;font-weight:700;color:var(--text2);text-transform:uppercase;letter-spacing:.05em;margin-bottom:5px">Nombre del tag</div>
+          <input type="text" id="it-name" placeholder="Ej: Pollo, Vegano, Sin TACC..." oninput="updateInlineTagPrev()" style="width:100%;padding:8px 10px;border:1.5px solid var(--border);border-radius:var(--rsm);background:#fff;color:var(--text);font-size:13px;outline:none;font-family:inherit;margin-bottom:8px">
+          <div style="font-size:11px;font-weight:700;color:var(--text2);text-transform:uppercase;letter-spacing:.05em;margin-bottom:6px">Color</div>
+          <div class="color-dots" id="it-dots" style="margin-bottom:8px"></div>
+          <div style="display:flex;align-items:center;justify-content:space-between">
+            <span id="it-prev" style="display:inline-block;padding:4px 14px;border-radius:20px;font-size:12px;font-weight:700;background:var(--rose-l);color:var(--rose-d)">mi tag</span>
+            <button onclick="saveInlineTag()" style="background:var(--rose-d);color:#fff;border:none;border-radius:var(--rsm);padding:7px 14px;font-size:12px;font-weight:700;cursor:pointer;font-family:inherit"><i class="ti ti-check"></i> Guardar</button>
+          </div>
+        </div>
       </div>
       <div class="field"><label>Foto (URL)</label><input type="url" id="f-img" placeholder="https://..."></div>
       <div class="field"><label>Notas</label><textarea id="f-note" placeholder="Comentarios, tips, dónde probarlo..."></textarea></div>
@@ -331,6 +341,12 @@ function editFromDetail(){closeM('modal-detail');openEdit(viewId)}
 function closeM(id){document.getElementById(id).style.display='none'}
 function bgClose(e,id){if(e.target===document.getElementById(id))closeM(id)}
 
+let inlineTagColor=0;
+function toggleInlineTag(){const box=document.getElementById('inline-tag-box');const open=box.style.display==='none';box.style.display=open?'block':'none';if(open){buildInlineTagDots();document.getElementById('it-name').focus()}}
+function buildInlineTagDots(){document.getElementById('it-dots').innerHTML=COLORS.map(([bg],i)=>`<div class="dot${i===inlineTagColor?' sel':''}" style="background:${bg}" onclick="pickInlineColor(${i})"></div>`).join('')}
+function pickInlineColor(i){inlineTagColor=i;buildInlineTagDots();updateInlineTagPrev()}
+function updateInlineTagPrev(){const[bg,txt]=COLORS[inlineTagColor];const p=document.getElementById('it-prev');if(p){p.style.background=bg;p.style.color=txt;p.textContent=document.getElementById('it-name').value||'mi tag'}}
+function saveInlineTag(){const name=document.getElementById('it-name').value.trim();if(!name){alert('Ingresá un nombre.');return}const newTag={id:'t'+Date.now(),name,ci:inlineTagColor};tags.push(newTag);formTags.push(newTag.id);persistCloud();renderTagsForm();document.getElementById('it-name').value='';document.getElementById('inline-tag-box').style.display='none';inlineTagColor=0}
 function exportData(){if(!data.length){alert('No hay posts.');return}const h=['Título','Categoría','Subcategoría','Tags','Puntuación','Notas','Link','Fecha'];const rows=data.map(d=>[d.title,d.cat,d.sub,(d.tags||[]).map(id=>tagById(id)?.name||'').join('|'),d.rating,d.note,d.link,d.date].map(v=>`"${(v||'').toString().replace(/"/g,'""')}"`));const csv=[h,...rows].map(r=>r.join(',')).join('\n');const a=document.createElement('a');a.href='data:text/csv;charset=utf-8,\uFEFF'+encodeURIComponent(csv);a.download='mis-saves.csv';a.click()}
 
 if('serviceWorker' in navigator)navigator.serviceWorker.register('/sw.js');
